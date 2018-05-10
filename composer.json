@@ -14,10 +14,10 @@
   "minimum-stability": "stable",
   "require": {
     "yozh/yii2-base": "@dev",
-    "yozh/yii2-crud-v1": "@dev"
+    "yozh/yii2-form": "@dev"
   },
   "extra": {
-    "bootstrap": "yozh\\widget\\Bootstrap"
+    "_bootstrap": "yozh\\widget\\Bootstrap"
   },
   "autoload": {
     "psr-4": {

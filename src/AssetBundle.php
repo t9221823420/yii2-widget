@@ -13,11 +13,11 @@ class AssetBundle extends \yozh\base\AssetBundle
     ];
 	
     public $js = [
-        //'js/yozh-widget.js'
+        'js/yozh-widget.js'
     ];
 	
 	public $publishOptions = [
-		//'forceCopy'       => true,
+		'forceCopy'       => true,
 	];
 	
 }
