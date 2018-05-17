@@ -19,9 +19,17 @@ use yozh\widget\traits\ActiveInputTarit;
 
 class ActiveButtonWidget extends Widget
 {
-	use ActiveInputTarit;
+	use ActiveInputTarit {
+		init as public initTarit;
+	}
 	
-	public $class = 'yozh-widget yozh-active-button';
+	const TYPE_OK     = 'ok';
+	const TYPE_CANCEL = 'cancel';
+	
+	const TYPES_CLASS = [
+		self::TYPE_OK     => 'success',
+		self::TYPE_CANCEL => 'danger',
+	];
 	
 	/**
 	 * @var string the tag to use to render the button
@@ -30,12 +38,17 @@ class ActiveButtonWidget extends Widget
 	/**
 	 * @var string the button label
 	 */
-	public $label = 'Button';
+	public $label;
 	
 	/**
 	 * @var bool whether the label should be HTML-encoded.
 	 */
 	public $encodeLabel = true;
+	
+	/**
+	 * @var string url for server ation.
+	 */
+	public $url;
 	
 	/**
 	 * @var string url for server ation.
@@ -76,7 +89,16 @@ class ActiveButtonWidget extends Widget
 	/**
 	 * @var string the model attribute that this widget is associated with.
 	 */
-	public $method;
+	public $type;
+	
+	
+	public function init()
+	{
+		static::initTarit();
+		
+		Html::addCssClass( $this->options, [ 'widget' => 'yozh-active-button' ] );
+		
+	}
 	
 	
 	/**
@@ -98,15 +120,10 @@ class ActiveButtonWidget extends Widget
 		
 		$options = $this->options;
 		
-		if( isset( $options['class'] ) && $options['class'] instanceof Closure ) {
-			Html::addCssClass( $options, call_user_func_array( $options['class'], $params ) );
-		}
-		else {
-			Html::addCssClass( $options, $this->class );
-		}
-		
 		$processProperties = [
+			'url',
 			'action',
+			'confirm',
 			'done',
 			'fail',
 			'method',
@@ -154,11 +171,22 @@ class ActiveButtonWidget extends Widget
 			
 		}
 		
+		if( in_array( $this->type, self::getConstants( 'TYPE_' ) ) ) {
+			
+			Html::addCssClass( $options, [ 'type' => 'yozh-active-button-' . $this->type ] );
+			Html::addCssClass( $options, [ 'bootstrap' => 'btn btn-' . static::TYPES_CLASS[ $this->type ] ] );
+			
+			if( !$this->label ) {
+				$this->label = Yii::t( 'app', ucfirst( $this->type ) );
+			}
+			
+		}
+		
 		$this->options = $options;
 		
 		AssetBundle::register( $View );
 		
-		return Html::tag( $this->tagName, $this->encodeLabel ? Html::encode( $this->label ) : $this->label, $this->options );
+		return Html::tag( $this->tagName, $this->encodeLabel ? Html::encode( $this->label ?? Yii::t( 'app', 'Button') ) : $this->label, $this->options );
 	}
 	
 }

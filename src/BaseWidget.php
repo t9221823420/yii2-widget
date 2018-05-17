@@ -9,8 +9,11 @@
 namespace yozh\widget;
 
 use yii\base\Widget;
+use yii\helpers\Html;
+use yozh\base\traits\ObjectTrait;
+use yozh\widget\traits\BaseWidgetTrait;
 
 class BaseWidget extends Widget
 {
-	
+	use BaseWidgetTrait, ObjectTrait;
 }
