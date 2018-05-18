@@ -23,12 +23,14 @@ class ActiveButtonWidget extends Widget
 		init as public initTarit;
 	}
 	
-	const TYPE_OK     = 'ok';
-	const TYPE_CANCEL = 'cancel';
+	const TYPE_DEFAULT = 'default';
+	const TYPE_OK      = 'ok';
+	const TYPE_CANCEL  = 'cancel';
 	
 	const TYPES_CLASS = [
-		self::TYPE_OK     => 'success',
-		self::TYPE_CANCEL => 'danger',
+		self::TYPE_DEFAULT => 'default',
+		self::TYPE_OK      => 'success',
+		self::TYPE_CANCEL  => 'danger',
 	];
 	
 	/**
@@ -186,7 +188,7 @@ class ActiveButtonWidget extends Widget
 		
 		AssetBundle::register( $View );
 		
-		return Html::tag( $this->tagName, $this->encodeLabel ? Html::encode( $this->label ?? Yii::t( 'app', 'Button') ) : $this->label, $this->options );
+		return Html::tag( $this->tagName, $this->encodeLabel ? Html::encode( $this->label ?? Yii::t( 'app', 'Button' ) ) : $this->label, $this->options );
 	}
 	
 }
