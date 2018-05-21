@@ -24,13 +24,13 @@ class ActiveButtonWidget extends Widget
 	}
 	
 	const TYPE_DEFAULT = 'default';
-	const TYPE_OK      = 'ok';
-	const TYPE_CANCEL  = 'cancel';
+	const TYPE_YES     = 'yes';
+	const TYPE_NO      = 'no';
 	
 	const TYPES_CLASS = [
 		self::TYPE_DEFAULT => 'default',
-		self::TYPE_OK      => 'success',
-		self::TYPE_CANCEL  => 'danger',
+		self::TYPE_YES     => 'success',
+		self::TYPE_NO      => 'danger',
 	];
 	
 	/**
@@ -86,7 +86,7 @@ class ActiveButtonWidget extends Widget
 	/**
 	 * @var string the model attribute that this widget is associated with.
 	 */
-	public $attribute;
+	public $attributes;
 	
 	/**
 	 * @var string the model attribute that this widget is associated with.
@@ -159,8 +159,8 @@ class ActiveButtonWidget extends Widget
 			
 			$attributes = null;
 			
-			if( $this->attribute !== null ) {
-				$attributes[] = $this->attribute;
+			if( $this->attributes ?? false ) {
+				$attributes = $this->attributes;
 			}
 			
 			$attributes = $this->model->getAttributes( $attributes );

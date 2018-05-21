@@ -16,6 +16,10 @@ class AssetBundle extends \yozh\base\AssetBundle
         'js/yozh-widget.js'
     ];
 	
+	public $depends = [
+		'yozh\base\AssetBundle',
+	];
+	
 	public $publishOptions = [
 		'forceCopy'       => true,
 	];
