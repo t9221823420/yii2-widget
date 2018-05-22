@@ -20,60 +20,9 @@ $( function () {
 		
 		var _$target = $( this );
 		
-		var _process = function(){
+		var _process = function () {
 			
-			if ( _$target.attr( 'url' ) ) {
-				
-				if ( _$target.attr( 'method' ) ) {
-					_method = _$target.attr( 'method' );
-				}
-				else {
-					_method = 'get';
-				}
-				
-				_$target.triggerHandler( 'yozh.ActiveButton.beforeSend', [ _$target ] );
-				
-				$.ajax( {
-						url : _$target.attr( 'url' ),
-						data : _$target.data(),
-						method : _method
-					} )
-					.done( function ( _response, status, xhr ) {
-						
-						_$target.triggerHandler( 'yozh.ActiveButton.done', [ _response, status, xhr, _$target ] );
-						
-						var _callback = _$target.attr( 'done' );
-						
-						if( _callback ){
-							try {
-								call_user_func( _callback, null, _response, status, xhr, _$target );
-							}
-							catch ( error ) {
-								console.log( error );
-							}
-						}
-						
-					} )
-					.fail( function ( _response, status, xhr ) {
-						
-						_$target.triggerHandler( 'yozh.ActiveButton.fail', [ _response, status, xhr, _$target ] );
-						
-						var _callback = _$target.attr( 'fail' );
-						
-						if( _callback ){
-							try {
-								call_user_func( _callback, null, _response, status, xhr, _$target );
-							}
-							catch ( error ) {
-								console.log( error );
-							}
-						}
-						
-					} )
-				;
-			}
-			
-			else if ( _$target.attr( 'action' ) ) {
+			if ( _$target.attr( 'action' ) ) {
 				
 				var _callback = _$target.attr( 'action' );
 				var _result;
@@ -108,10 +57,64 @@ $( function () {
 				
 				_$target.triggerHandler( 'yozh.ActiveButton.afterAction', [ _$target ] );
 				
-				return _result
-				
 			}
 			
+			if ( _$target.attr( 'url' ) ) {
+				
+				if ( _$target.attr( 'method' ) ) {
+					_method = _$target.attr( 'method' );
+				}
+				else {
+					_method = 'get';
+				}
+				
+				var _ajaxConfig = {
+					url : _$target.attr( 'url' ),
+					data : _$target.data(),
+					method : _method
+				};
+				
+				_$target.triggerHandler( 'yozh.ActiveButton.beforeSend', [ _ajaxConfig, _$target ] );
+				
+				$.ajax( _ajaxConfig )
+					
+					.done( function ( _response, status, xhr ) {
+						
+						_$target.triggerHandler( 'yozh.ActiveButton.done', [ _response, status, xhr, _$target ] );
+						
+						var _callback = _$target.attr( 'done' );
+						
+						if ( _callback ) {
+							try {
+								call_user_func( _callback, null, _response, status, xhr, _$target );
+							}
+							catch ( error ) {
+								console.log( error );
+							}
+						}
+						
+					} )
+					
+					.fail( function ( _response, status, xhr ) {
+						
+						_$target.triggerHandler( 'yozh.ActiveButton.fail', [ _response, status, xhr, _$target ] );
+						
+						var _callback = _$target.attr( 'fail' );
+						
+						if ( _callback ) {
+							try {
+								call_user_func( _callback, null, _response, status, xhr, _$target );
+							}
+							catch ( error ) {
+								console.log( error );
+							}
+						}
+						
+					} )
+				;
+			}
+			
+			return _result;
 		}
 		
 		if ( _$target.attr( 'confirm' ) ) {
@@ -132,11 +135,11 @@ $( function () {
 			
 		}
 		
-		if ( _confirmResult && $.isFunction(_confirmResult.promise) ) {
-			$.when( _confirmResult ).done( _process );
+		if ( _confirmResult && $.isFunction( _confirmResult.promise ) ) {
+			return $.when( _confirmResult ).done( _process );
 		}
 		else if ( _confirmResult === true ) {
-			_process();
+			return _process();
 		}
 		
 	} )
