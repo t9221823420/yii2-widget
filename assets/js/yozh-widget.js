@@ -29,14 +29,14 @@ $( function () {
 				
 				_$target.triggerHandler( 'yozh.ActiveButton.beforeAction', [ _$target ] );
 				
-				try {
+				//try {
 					_result = call_user_func( _callback, null, _$target );
-				}
+				/*}
 				catch ( error ) {
 					
 					console.log( error );
 					
-				}
+				}*/
 				
 				/*
 				if ( typeof _callback === 'function' ) {
@@ -85,12 +85,12 @@ $( function () {
 						var _callback = _$target.attr( 'done' );
 						
 						if ( _callback ) {
-							try {
+							//try {
 								call_user_func( _callback, null, _response, status, xhr, _$target );
-							}
+							/*}
 							catch ( error ) {
 								console.log( error );
-							}
+							}*/
 						}
 						
 					} )
@@ -102,12 +102,12 @@ $( function () {
 						var _callback = _$target.attr( 'fail' );
 						
 						if ( _callback ) {
-							try {
+							//try {
 								call_user_func( _callback, null, _response, status, xhr, _$target );
-							}
+							/*}
 							catch ( error ) {
 								console.log( error );
-							}
+							}*/
 						}
 						
 					} )
@@ -119,17 +119,19 @@ $( function () {
 		
 		if ( _$target.attr( 'confirm' ) ) {
 			
+			var _confirmOptions = _$target.attr( 'confirmOptions' );
+			
 			_$target.triggerHandler( 'yozh.ActiveButton.beforeConfirm', [ _$target.attr( 'confirm' ), _$target ] );
 			
-			try {
-				_confirmResult = call_user_func( _$target.attr( 'confirm' ) );
-			}
+			//try {
+				_confirmResult = call_user_func( _$target.attr( 'confirm' ), null, _$target, _confirmOptions );
+			/*}
 			catch ( error ) {
 				
 				console.log( error );
 				
 				_confirmResult = false;
-			}
+			}*/
 			
 			_$target.triggerHandler( 'yozh.ActiveButton.afterConfirm', [ _confirmResult, _$target ] );
 			
@@ -139,6 +141,9 @@ $( function () {
 			return $.when( _confirmResult ).done( _process );
 		}
 		else if ( _confirmResult === true ) {
+			// by default it always run on any ActionButtons
+			// inside _process cheks if ActionButton has url or action
+			// for example^ button NO always run _process, but by default it has not url nor action
 			return _process();
 		}
 		
