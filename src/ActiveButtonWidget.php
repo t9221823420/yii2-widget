@@ -14,7 +14,7 @@ use yozh\widget\BaseBootstrapWidget as Widget;
 use yii\bootstrap\Html;
 use yozh\base\helpers\Config;
 use yozh\widget\AssetBundle;
-use yozh\base\components\ArrayHelper;
+use yozh\base\components\utils\ArrayHelper;
 use yozh\widget\traits\ActiveInputTarit;
 
 class ActiveButtonWidget extends Widget
