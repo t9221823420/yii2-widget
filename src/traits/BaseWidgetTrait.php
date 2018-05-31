@@ -8,7 +8,7 @@
 
 namespace yozh\widget\traits;
 
-use yii\bootstrap\Html;
+use yii\bootstrap4\Html;
 
 trait BaseWidgetTrait
 {

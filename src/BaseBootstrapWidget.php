@@ -8,7 +8,7 @@
 
 namespace yozh\widget;
 
-use yii\bootstrap\BootstrapWidgetTrait;
+use yii\bootstrap4\BootstrapWidgetTrait;
 use yozh\widget\BaseWidget as Widget;
 
 class BaseBootstrapWidget extends Widget

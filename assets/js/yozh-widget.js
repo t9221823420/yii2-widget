@@ -30,7 +30,7 @@ $( function () {
 				_$target.triggerHandler( 'yozh.ActiveButton.beforeAction', [ _$target ] );
 				
 				//try {
-					_result = call_user_func( _callback, null, _$target );
+				_result = call_user_func( _callback, null, _$target );
 				/*}
 				catch ( error ) {
 					
@@ -86,7 +86,7 @@ $( function () {
 						
 						if ( _callback ) {
 							//try {
-								call_user_func( _callback, null, _response, status, xhr, _$target );
+							call_user_func( _callback, null, _response, status, xhr, _$target );
 							/*}
 							catch ( error ) {
 								console.log( error );
@@ -103,7 +103,7 @@ $( function () {
 						
 						if ( _callback ) {
 							//try {
-								call_user_func( _callback, null, _response, status, xhr, _$target );
+							call_user_func( _callback, null, _response, status, xhr, _$target );
 							/*}
 							catch ( error ) {
 								console.log( error );
@@ -124,7 +124,7 @@ $( function () {
 			_$target.triggerHandler( 'yozh.ActiveButton.beforeConfirm', [ _$target.attr( 'confirm' ), _$target ] );
 			
 			//try {
-				_confirmResult = call_user_func( _$target.attr( 'confirm' ), null, _$target, _confirmOptions );
+			_confirmResult = call_user_func( _$target.attr( 'confirm' ), null, _$target, _confirmOptions );
 			/*}
 			catch ( error ) {
 				
@@ -149,6 +149,22 @@ $( function () {
 		
 	} )
 	;
+	
+	$( document ).on( 'change', 'select.yozh-widget-nested-select', function () {
+		
+		var _wrapperClass = '.yozh-widget-nested-select-nested-group';
+		var _$target = $( this );
+		
+		if ( _$target.val() ) {
+			$( _$target.attr( 'nested-selector' ) ).load( _$target.attr( 'url' ), 'value=' + _$target.val(), function () {
+				_$target.parents( _wrapperClass ).children( _wrapperClass ).removeClass('hide');
+			} );
+		}
+		else {
+			_$target.parents( _wrapperClass ).children( _wrapperClass ).addClass( 'hide' );
+		}
+		
+	} );
 	
 } )
 ;
