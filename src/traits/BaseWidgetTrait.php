@@ -8,7 +8,7 @@
 
 namespace yozh\widget\traits;
 
-use yii\bootstrap4\Html;
+use yii\helpers\Html;
 
 trait BaseWidgetTrait
 {
@@ -19,7 +19,7 @@ trait BaseWidgetTrait
 		$options = &$this->options;
 		
 		if( isset( $options['class'] ) && $options['class'] instanceof Closure ) {
-			Html::addCssClass( $options, call_user_func_array( $options['class'], $params ) );
+			Html::addCssClass( $options, call_user_func_array( $options['class'], [ $this ] ) );
 		}
 		
 		Html::addCssClass( $options, [ 'base_widget' => 'yozh-widget' ] );

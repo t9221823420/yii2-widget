@@ -11,7 +11,7 @@ namespace yozh\widget;
 use Yii;
 use yii\base\Model;
 use yozh\widget\BaseBootstrapWidget as Widget;
-use yii\bootstrap4\Html;
+use yii\helpers\Html;
 use yozh\base\helpers\Config;
 use yozh\widget\AssetBundle;
 use yozh\base\components\utils\ArrayHelper;
