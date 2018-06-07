@@ -6,18 +6,16 @@
  * Time: 9:44
  */
 
-namespace yozh\widget;
+namespace yozh\widget\widgets;
 
 use Yii;
 use yii\base\Model;
-use yozh\widget\BaseBootstrapWidget as Widget;
+use yozh\widget\widgets\BaseBootstrapWidget as Widget;
 use yii\helpers\Html;
 use yozh\base\helpers\Config;
-use yozh\widget\AssetBundle;
-use yozh\base\components\utils\ArrayHelper;
 use yozh\widget\traits\ActiveInputTarit;
 
-class ActiveButtonWidget extends Widget
+class ActiveButton extends Widget
 {
 	use ActiveInputTarit {
 		init as public initTarit;
@@ -98,7 +96,7 @@ class ActiveButtonWidget extends Widget
 	{
 		static::initTarit();
 		
-		Html::addCssClass( $this->options, [ 'widget' => 'yozh-active-button' ] );
+		Html::addCssClass( $this->options, [ 'widget' => 'yozh-widget-active-button' ] );
 		
 	}
 	
@@ -175,7 +173,7 @@ class ActiveButtonWidget extends Widget
 		
 		if( in_array( $this->type, self::getConstants( 'TYPE_' ) ) ) {
 			
-			Html::addCssClass( $options, [ 'type' => 'yozh-active-button-' . $this->type ] );
+			Html::addCssClass( $options, [ 'type' => 'yozh-widget-active-button-' . $this->type ] );
 			Html::addCssClass( $options, [ 'bootstrap' => 'btn btn-' . static::TYPES_CLASS[ $this->type ] ] );
 			
 			if( !$this->label ) {
@@ -186,7 +184,7 @@ class ActiveButtonWidget extends Widget
 		
 		$this->options = $options;
 		
-		AssetBundle::register( $View );
+		\yozh\widget\AssetBundle::register( $View );
 		
 		return Html::tag( $this->tagName, $this->encodeLabel ? Html::encode( $this->label ?? Yii::t( 'app', 'Button' ) ) : $this->label, $this->options );
 	}

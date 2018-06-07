@@ -4,13 +4,13 @@ $( function () {
 	
 	yozh.ActiveButton = {
 		
-		TEMPLATE : '<button class="yozh-widget yozh-active-button yozh-active-button-{type} {class}">{label}</button>',
+		TEMPLATE : '<button class="yozh-widget yozh-widget-active-button yozh-widget-active-button-{type} {class}">{label}</button>',
 		
-		WIDGET_CLASS : 'yozh-active-button',
+		WIDGET_CLASS : 'yozh-widget-active-button',
 		
 	};
 	
-	$( document ).on( 'click', '.yozh-active-button', function ( e ) {
+	$( document ).on( 'click', '.yozh-widget-active-button', function ( e ) {
 		
 		e.stopPropagation();
 		e.preventDefault();
@@ -97,6 +97,10 @@ $( function () {
 					
 					.fail( function ( _response, status, xhr ) {
 						
+						if( _response.status < 400 ){
+							return;
+						}
+						
 						_$target.triggerHandler( 'yozh.ActiveButton.fail', [ _response, status, xhr, _$target ] );
 						
 						var _callback = _$target.attr( 'fail' );
@@ -150,15 +154,61 @@ $( function () {
 	} )
 	;
 	
+	$( document ).on( 'change', '.yozh-widget-active-filter', function () {
+		this.form.submit();
+	} );
+	
+	$( document ).on( 'keyup', 'input[name="filter_search"].yozh-widget-active-filter', function () {
+		if ( $( this ).val().length > 3 || $( this ).val().length == 0 ) {
+			this.form.submit();
+		}
+	} );
+	
 	$( document ).on( 'change', 'select.yozh-widget-nested-select', function () {
 		
 		var _wrapperClass = '.yozh-widget-nested-select-nested-group';
 		var _$target = $( this );
 		
 		if ( _$target.val() ) {
-			$( _$target.attr( 'nested-selector' ) ).load( _$target.attr( 'url' ), 'value=' + _$target.val(), function () {
-				_$target.parents( _wrapperClass ).children( _wrapperClass ).removeClass('hide');
-			} );
+			
+			var _ajaxConfig = {
+				url : _$target.attr( 'url' ),
+				data : {
+					value : _$target.val()
+				},
+				//method : _method || 'get',
+			};
+			
+			$.ajax( _ajaxConfig )
+				
+				.done( function ( _response, status, xhr ) {
+					
+					_$target.triggerHandler( 'yozh.ActiveNestedSelect.done', [ _response, status, xhr, _$target ] );
+					
+					$( _$target.attr( 'nested-selector' ) ).html( _response );
+					_$target.parents( _wrapperClass ).children( _wrapperClass ).removeClass( 'hide' );
+					
+					var _callback = _$target.attr( 'done' );
+					
+					if ( _callback ) {
+						call_user_func( _callback, null, _response, status, xhr, _$target );
+					}
+					
+				} )
+				
+				.fail( function ( _response, status, xhr ) {
+					
+					_$target.triggerHandler( 'yozh.ActiveNestedSelect.fail', [ _response, status, xhr, _$target ] );
+					
+					var _callback = _$target.attr( 'fail' );
+					
+					if ( _callback ) {
+						call_user_func( _callback, null, _response, status, xhr, _$target );
+					}
+					
+				} )
+			;
+			
 		}
 		else {
 			_$target.parents( _wrapperClass ).children( _wrapperClass ).addClass( 'hide' );

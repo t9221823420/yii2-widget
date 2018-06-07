@@ -6,7 +6,7 @@
  * Time: 9:43
  */
 
-namespace yozh\widget;
+namespace yozh\widget\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;

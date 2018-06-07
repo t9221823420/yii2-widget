@@ -6,7 +6,7 @@
  * Time: 16:19
  */
 
-namespace yozh\widget;
+namespace yozh\widget\widgets;
 
 use Closure;
 use Yii;

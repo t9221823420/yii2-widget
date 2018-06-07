@@ -6,10 +6,10 @@
  * Time: 9:58
  */
 
-namespace yozh\widget;
+namespace yozh\widget\widgets;
 
 use yii\bootstrap\BootstrapWidgetTrait;
-use yozh\widget\BaseWidget as Widget;
+use yozh\widget\widgets\BaseWidget as Widget;
 
 class BaseBootstrapWidget extends Widget
 {
