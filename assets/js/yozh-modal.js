@@ -234,6 +234,14 @@
 				jQuery( this ).parents( '.yozh-modal' ).modal( 'hide' );
 			} );
 		
+		jQuery( this.element ).on( 'keypress', 'form *', function ( event ) {
+			if ( event.keyCode == 13 ) {
+				event.preventDefault();
+				$(this).blur();
+				return false;
+			}
+		} );
+		
 	};
 	
 	Modal.prototype.config = function ( _config ) {
@@ -284,8 +292,8 @@
 		this.url = _config.url || this.url || false;
 		this.ajaxSubmit = _config.ajaxSubmit || this.ajaxSubmit || true;
 		
-		if( typeof _config.data !== 'undefined' ){
-			$(this).removeData().data( _config.data );
+		if ( typeof _config.data !== 'undefined' ) {
+			$( this ).removeData().data( _config.data );
 		}
 		
 	};
@@ -343,7 +351,7 @@
 		
 		jQuery.ajax( {
 				url : _context.url,
-				data : jQuery(_context).data(),
+				data : jQuery( _context ).data(),
 				context : _context,
 				beforeSend : function ( xhr, settings ) {
 					jQuery( _context.element ).triggerHandler( 'yozh.Modal.beforeLoad', [ xhr, settings ] );
@@ -384,9 +392,9 @@
 	
 	Modal.prototype.processSectionWithResponse = function ( _sectionName, _response ) {
 		
-		if ( typeof ( _response.yozh.modal || {} )[ _sectionName ]  !== 'undefined' ) {
+		if ( typeof ( _response.yozh.modal || {} )[ _sectionName ] !== 'undefined' ) {
 			
-			if( typeof ( _response.yozh.modal[ _sectionName ] || {} ).text !== 'undefined' ){
+			if ( typeof ( _response.yozh.modal[ _sectionName ] || {} ).text !== 'undefined' ) {
 				
 				this.injectHtml( this[ _sectionName ], _response.yozh.modal[ _sectionName ].text );
 				

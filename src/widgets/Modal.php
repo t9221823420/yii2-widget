@@ -63,6 +63,14 @@ class Modal extends Widget
 	 * @since 2.0.1
 	 */
 	public $headerOptions;
+	
+	/**
+	 * @var string the body content in the alert component. Note that anything between
+	 * the [[begin()]] and [[end()]] calls of the Alert widget will also be treated
+	 * as the body content, and will be rendered before this.
+	 */
+	public $body;
+	
 	/**
 	 * @var array body options
 	 * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
@@ -79,10 +87,12 @@ class Modal extends Widget
 	 * @since 2.0.1
 	 */
 	public $footerOptions;
+	
 	/**
 	 * @var string the modal size. Can be [[SIZE_LARGE]] or [[SIZE_SMALL]], or empty for default.
 	 */
 	public $size;
+	
 	/**
 	 * @var array|false the options for rendering the close button tag.
 	 * The close button is displayed in the header of the modal window. Clicking
@@ -98,6 +108,7 @@ class Modal extends Widget
 	 * for the supported HTML attributes.
 	 */
 	public $closeButton = [];
+	
 	/**
 	 * @var array the options for rendering the toggle button tag.
 	 * The toggle button is used to toggle the visibility of the modal window.
@@ -121,11 +132,24 @@ class Modal extends Widget
 	public $url;
 	
 	/**
-	 * @var string the body content in the alert component. Note that anything between
-	 * the [[begin()]] and [[end()]] calls of the Alert widget will also be treated
-	 * as the body content, and will be rendered before this.
+	 * @var string call
 	 */
-	public $body;
+	public $done;
+	
+	/**
+	 * @var bool whether the label should be HTML-encoded.
+	 */
+	public $fail;
+	
+	/**
+	 * @var string call
+	 */
+	public $open;
+	
+	/**
+	 * @var bool whether the label should be HTML-encoded.
+	 */
+	public $close;
 	
 	/**
 	 * Submit the form via ajax

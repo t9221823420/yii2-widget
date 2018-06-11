@@ -18,7 +18,7 @@ class AssetBundle extends \yozh\base\AssetBundle
     ];
 	
 	public $depends = [
-		'yozh\base\AssetBundle',
+		\yozh\base\AssetBundle::class,
 	];
 	
 	public $publishOptions = [
