@@ -218,3 +218,24 @@ $( function () {
 	
 } )
 ;
+
+/*
+function search(_search, _url, _$container) {
+	
+	if (_search.length > 3 || _search.length === 0) {
+		$.ajax({
+			url: _url,
+			dataType: 'json',
+			data: {
+				'search': _search,
+			},
+			cache: false,
+			success: function ( _response ) {
+				_$container.html( _response.result.html );
+			}
+		});
+		
+	}
+	return false;
+}
+*/
