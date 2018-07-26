@@ -8,7 +8,12 @@
 
 namespace yozh\widget\widgets\grid;
 
-class ActionColumn extends \kartik\grid\ActionColumn
+class ActionColumn extends \yii\grid\ActionColumn
 {
+	public $filter;
 	
+	protected function renderFilterCellContent()
+	{
+		return $this->filter;
+	}
 }

@@ -201,10 +201,7 @@ class Modal extends Widget
 		
 		$js = <<<JS
 		
-        jQuery('#$id').yozhModal({
-            url: '{$this->url}',
-            ajaxSubmit: {$ajaxSubmit},
-        });
+jQuery('#$id').yozhModal({});
 
 JS;
 		$this->getView()->registerJs( $js );

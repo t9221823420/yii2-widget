@@ -21,7 +21,7 @@ class DataColumn extends \yii\grid\DataColumn
 	public $colSpan = 1;
 	public $rowSpan = 1;
 	
-	public function renderDataCell( $model, $key, $index )
+	public function renderDataCell( $Model, $key, $index )
 	{
 		if( static::$_columnNumber == count( $this->grid->columns ) ) {
 			static::$_columnNumber      = 0;
@@ -32,21 +32,21 @@ class DataColumn extends \yii\grid\DataColumn
 		static::$_columnNumber++;
 		
 		if( $this->contentOptions instanceof Closure ) {
-			$options = call_user_func( $this->contentOptions, $model, $key, $index, $this );
+			$options = call_user_func( $this->contentOptions, $Model, $key, $index, $this );
 		}
 		else {
 			$options = $this->contentOptions;
 		}
 		
 		if( $this->colSpan instanceof \Closure ) {
-			$colSpan = call_user_func( $this->colSpan, $model, $key, $index, $this );
+			$colSpan = call_user_func( $this->colSpan, $Model, $key, $index, $this );
 		}
 		else {
 			$colSpan = $this->colSpan;
 		}
 		
 		if( $this->rowSpan instanceof \Closure ) {
-			$rowSpan = call_user_func( $this->rowSpan, $model, $key, $index, $this );
+			$rowSpan = call_user_func( $this->rowSpan, $Model, $key, $index, $this );
 		}
 		else {
 			$rowSpan = $this->rowSpan;
@@ -70,7 +70,7 @@ class DataColumn extends \yii\grid\DataColumn
 				$options['colspan'] = $colSpan;
 			}
 			
-			return Html::tag( 'td', $this->renderDataCellContent( $model, $key, $index ), $options );
+			return Html::tag( 'td', $this->renderDataCellContent( $Model, $key, $index ), $options );
 		}
 		
 		if( static::$_rowSpanCounter[ static::$_columnNumber ] > 1 ) {

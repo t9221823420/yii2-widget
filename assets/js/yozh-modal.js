@@ -205,6 +205,9 @@
 		
 		//_context = this;
 		
+		Modal.loadedScripts = [ ...new Set( Modal.loadedScripts.concat( _getPageScriptTags() ) ) ];
+		Modal.loadedCSS = [ ...new Set( Modal.loadedCSS.concat( _getPageCssLinks() ) ) ];
+		
 		this.element = element;
 		
 		var $element = jQuery( this.element );
@@ -222,8 +225,8 @@
 		
 	};
 	
-	Modal.loadedScripts = _getPageScriptTags();
-	Modal.loadedCSS = _getPageCssLinks();
+	Modal.loadedScripts = [];
+	Modal.loadedCSS = [];
 	
 	Modal.prototype.init = function ( options ) {
 		
@@ -237,7 +240,7 @@
 		jQuery( this.element ).on( 'keypress', 'form *', function ( event ) {
 			if ( event.keyCode == 13 ) {
 				event.preventDefault();
-				$(this).blur();
+				$( this ).blur();
 				return false;
 			}
 		} );
@@ -425,6 +428,7 @@
 		
 		$form.on( 'submit', function ( e ) {
 			
+			var _$form = $( this );
 			var _formData = new FormData( this );
 			
 			$.ajax( {
@@ -447,14 +451,18 @@
 						_context.processResponse( _response, status, xhr );
 					}
 					
-					jQuery( _context.element ).triggerHandler( yozh.Modal.EVENT_SUBMIT, [ _response, status, xhr ] );
+					jQuery( _context.element ).triggerHandler( yozh.Modal.EVENT_SUBMIT, [ _response, status, xhr, _$form ] );
 					
 				} )
 				.fail( function ( _response, status, xhr ) {
 					
+					if ( _response.status < 400 ) {
+						return;
+					}
+					
 					_context.processFail( _response, status, xhr );
 					
-					jQuery( _context.element ).triggerHandler( yozh.Modal.EVENT_FAIL_SUBMIT, [ _response, status, xhr ] );
+					jQuery( _context.element ).triggerHandler( yozh.Modal.EVENT_FAIL_SUBMIT, [ _response, status, xhr, _$form ] );
 					
 				} )
 			;

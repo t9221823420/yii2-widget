@@ -12,7 +12,7 @@ use Yii;
 use yii\base\Model;
 use yozh\widget\widgets\BaseBootstrapWidget as Widget;
 use yii\helpers\Html;
-use yozh\base\helpers\Config;
+use yozh\base\components\utils\Config;
 use yozh\widget\traits\ActiveInputTarit;
 
 class ActiveButton extends Widget

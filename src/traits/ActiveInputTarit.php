@@ -18,7 +18,7 @@ use yii\helpers\Html;
  * using the [[yii\widgets\ActiveField::widget()|widget()]] method, for example like this:
  *
  * ```php
- * <?= $form->field($model, 'from_date')->widget('WidgetClassName', [
+ * <?= $form->field($Model, 'from_date')->widget('WidgetClassName', [
  *     // configure additional widget properties here
  * ]) ?>
  * ```
