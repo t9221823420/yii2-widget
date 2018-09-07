@@ -11,7 +11,7 @@ namespace yozh\widget\widgets;
 use yii\data\Pagination;
 use yii\jui\Widget;
 use yii\helpers\Html;
-use yozh\base\components\utils\ArrayHelper;
+use yozh\base\components\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
 
 class LimitPager extends Widget

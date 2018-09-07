@@ -12,7 +12,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yozh\widget\AssetBundle;
 use yii\bootstrap\Widget;
-use yozh\base\components\utils\ArrayHelper;
+use yozh\base\components\helpers\ArrayHelper;
 use yozh\widget\traits\BaseWidgetTrait;
 
 /**
