@@ -8,10 +8,10 @@
 
 namespace yozh\widget\widgets;
 
-use yii\base\Widget;
-use yozh\widget\traits\WidgetTrait;
+use yii\jui\Widget;
+use yozh\widget\traits\JuiWidgetTrait;
 
-class BaseWidget extends Widget
+class BaseJuiWidget extends Widget
 {
-	use WidgetTrait;
+	use JuiWidgetTrait;
 }

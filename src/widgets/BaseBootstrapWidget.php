@@ -8,16 +8,10 @@
 
 namespace yozh\widget\widgets;
 
-use yii\bootstrap\BootstrapWidgetTrait;
-use yozh\widget\widgets\BaseWidget as Widget;
 
-class BaseBootstrapWidget extends Widget
+use yozh\widget\traits\BootstrapWidgetTrait;
+
+class BaseBootstrapWidget extends BaseWidget
 {
 	use BootstrapWidgetTrait;
-	
-	/**
-	 * @var array the HTML attributes for the widget container tag.
-	 * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
-	 */
-	public $options = [];
 }

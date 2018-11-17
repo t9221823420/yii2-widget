@@ -186,7 +186,11 @@ class ActiveButton extends Widget
 		
 		\yozh\widget\AssetBundle::register( $View );
 		
-		return Html::tag( $this->tagName, $this->encodeLabel ? Html::encode( $this->label ?? Yii::t( 'app', 'Button' ) ) : $this->label, $this->options );
+		return Html::tag( $this->tagName, $this->encodeLabel
+			? Html::encode( $this->label ?? Yii::t( 'app', 'Button' ) )
+			: $this->label, $this->options
+		);
+		
 	}
 	
 }

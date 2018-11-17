@@ -8,8 +8,8 @@
 
 namespace yozh\widget\widgets;
 
+use yozh\widget\widgets\BaseJuiWidget as Widget;
 use yii\data\Pagination;
-use yii\jui\Widget;
 use yii\helpers\Html;
 use yozh\base\components\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;

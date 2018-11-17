@@ -11,9 +11,8 @@ namespace yozh\widget\widgets;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yozh\widget\AssetBundle;
-use yii\bootstrap\Widget;
+use yozh\widget\widgets\BaseBootstrapWidget as Widget;
 use yozh\base\components\helpers\ArrayHelper;
-use yozh\widget\traits\BaseWidgetTrait;
 
 /**
  * Modal renders a modal window that can be toggled by clicking on a button.
@@ -39,10 +38,6 @@ use yozh\widget\traits\BaseWidgetTrait;
  */
 class Modal extends Widget
 {
-	use BaseWidgetTrait {
-		init as public baseInitTarit;
-	}
-	
 	const PLUGIN_ID = 'yozhModal';
 	
 	/*
@@ -162,7 +157,7 @@ class Modal extends Widget
 	 */
 	public function init()
 	{
-		static::baseInitTarit();
+		parent::init();
 		
 		$this->_initOptions();
 		
