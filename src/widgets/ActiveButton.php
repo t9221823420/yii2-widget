@@ -131,7 +131,13 @@ class ActiveButton extends Widget
 		
 		foreach( $processProperties as $property ) {
 			if( $this->$property ?? false ) {
+				
 				$options[ $property ] = Config::setWithClosure( $this->$property );
+				
+				if ( $property == 'url' && $this->tagName == 'a' && !empty($this->url) ){
+					$options['href'] = $this->url;
+					unset($options['url']);
+				}
 			}
 		}
 		
