@@ -84,9 +84,9 @@ $( function () {
 						
 						var _callback = _$target.attr( 'done' );
 						
-						if ( _callback ) {
+						if ( typeof _callback == 'function' ) {
 							//try {
-							call_user_func( _callback, null, _response, status, xhr, _$target );
+							return call_user_func( _callback, null, _response, status, xhr, _$target );
 							/*}
 							catch ( error ) {
 								console.log( error );
@@ -105,9 +105,9 @@ $( function () {
 						
 						var _callback = _$target.attr( 'fail' );
 						
-						if ( _callback ) {
+						if ( typeof _callback == 'function' ) {
 							//try {
-							call_user_func( _callback, null, _response, status, xhr, _$target );
+							return call_user_func( _callback, null, _response, status, xhr, _$target );
 							/*}
 							catch ( error ) {
 								console.log( error );
@@ -166,13 +166,13 @@ $( function () {
 	
 	$( document ).on( 'change', 'select.yozh-widget-nested-select', function () {
 		
-		var _wrapperClass = '.yozh-widget-nested-select-nested-group';
+		//var _wrapperClass = '.yozh-widget-nested-select-nested-group';
 		var _$target = $( this );
 		
 		if ( _$target.val() ) {
 			
 			var _ajaxConfig = {
-				url : _$target.attr( 'url' ),
+				url : _$target.data( 'url' ),
 				data : {
 					value : _$target.val()
 				},
@@ -185,13 +185,13 @@ $( function () {
 					
 					_$target.triggerHandler( 'yozh.ActiveNestedSelect.done', [ _response, status, xhr, _$target ] );
 					
-					$( _$target.attr( 'nested-selector' ) ).html( _response );
-					_$target.parents( _wrapperClass ).children( _wrapperClass ).removeClass( 'hide' );
+					$( _$target.data( 'selector' ) ).html( _response );
+					//_$target.parents( _wrapperClass ).children( _wrapperClass ).removeClass( 'hide' );
 					
-					var _callback = _$target.attr( 'done' );
+					var _callback = _$target.data( 'done' );
 					
-					if ( _callback ) {
-						call_user_func( _callback, null, _response, status, xhr, _$target );
+					if ( typeof _callback == 'function' ) {
+						return call_user_func( _callback, null, _response, status, xhr, _$target );
 					}
 					
 				} )
@@ -200,10 +200,10 @@ $( function () {
 					
 					_$target.triggerHandler( 'yozh.ActiveNestedSelect.fail', [ _response, status, xhr, _$target ] );
 					
-					var _callback = _$target.attr( 'fail' );
+					var _callback = _$target.data( 'fail' );
 					
-					if ( _callback ) {
-						call_user_func( _callback, null, _response, status, xhr, _$target );
+					if ( typeof _callback == 'function' ) {
+						return call_user_func( _callback, null, _response, status, xhr, _$target );
 					}
 					
 				} )

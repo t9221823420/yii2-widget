@@ -300,7 +300,7 @@ JS;
 		
 		$this->options = array_merge( [
 			'role'     => 'dialog',
-			'tabindex' => -1,
+			'tabindex' => false,
 		], $this->options );
 		
 		Html::addCssClass( $this->options, [ 'widget' => 'yozh-modal fade modal' ] );
