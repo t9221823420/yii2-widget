@@ -134,9 +134,10 @@ class ActiveButton extends Widget
 				
 				$options[ $property ] = Config::setWithClosure( $this->$property );
 				
+				// if ommit - href will be empty
 				if ( $property == 'url' && $this->tagName == 'a' && !empty($this->url) ){
 					$options['href'] = $this->url;
-					unset($options['url']);
+					//unset($options['url']); comment because of not processed as ActiveButton after action
 				}
 			}
 		}

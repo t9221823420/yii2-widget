@@ -22,10 +22,11 @@ $( function () {
 		
 		var _process = function () {
 			
+			var _result = true;
+			
 			if ( _$target.attr( 'action' ) ) {
 				
 				var _callback = _$target.attr( 'action' );
-				var _result;
 				
 				_$target.triggerHandler( 'yozh.ActiveButton.beforeAction', [ _$target ] );
 				
@@ -59,7 +60,7 @@ $( function () {
 				
 			}
 			
-			if ( _$target.attr( 'url' ) ) {
+			if ( _result && _$target.attr( 'url' )) {
 				
 				if ( _$target.attr( 'method' ) ) {
 					_method = _$target.attr( 'method' );
