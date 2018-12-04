@@ -42,8 +42,30 @@ class GridView extends \yii\grid\GridView
                 return parent::renderSection($name);
         }
     }
-
-    public function renderLimits()
+	
+    /*
+	public function renderItems()
+	{
+		if( $this->dataProvider->getCount() <= 0) {
+		
+		}
+		
+		return parent::renderItems();
+	}
+    */
+	
+	/*
+	public function renderFilters()
+	{
+		if( $this->dataProvider->getCount() > 0){
+			return parent::renderFilters();
+		}
+		
+		return '';
+	}
+	*/
+	
+	public function renderLimits()
     {
         /* @var $class LinkPager */
         $config = $this->limitPagerOptions;
