@@ -152,6 +152,8 @@ class Modal extends Widget
 	 */
 	public $ajaxSubmit = true;
 	
+	public $options;
+	
 	/**
 	 * Initializes the widget.
 	 */
@@ -303,7 +305,7 @@ JS;
 			'tabindex' => false,
 		], $this->options );
 		
-		Html::addCssClass( $this->options, [ 'widget' => 'yozh-modal fade modal' ] );
+		Html::addCssClass( $this->options, [ 'type' => 'fade modal' ] );
 		
 		if( is_array( $this->clientOptions ) ) {
 			$this->clientOptions = array_merge( [ 'show' => false ], $this->clientOptions );
@@ -346,7 +348,7 @@ JS;
 		
 		if( $this->footer !== false ) {
 			
-			Html::addCssClass( $this->footerOptions, [ 'widget' => 'modal-footer' ] );
+			Html::addCssClass( $this->footerOptions, [ 'section' => 'modal-footer' ] );
 			
 			$output .= ''
 				. "\n" . Html::beginTag( 'div', $this->footerOptions )
@@ -368,7 +370,7 @@ JS;
 			
 			$button = $this->_renderCloseButton();
 			
-			Html::addCssClass( $this->headerOptions, [ 'widget' => 'modal-header' ] );
+			Html::addCssClass( $this->headerOptions, [ 'section' => 'modal-header' ] );
 			
 			return ''
 				. "\n" . Html::beginTag( 'div', $this->headerOptions )

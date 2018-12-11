@@ -10,6 +10,7 @@ namespace yozh\widget\widgets;
 
 use Yii;
 use yii\base\Model;
+use yozh\widget\traits\WidgetTrait;
 use yozh\widget\widgets\BaseBootstrapWidget as Widget;
 use yii\helpers\Html;
 use yozh\base\components\utils\Config;
@@ -17,9 +18,7 @@ use yozh\widget\traits\ActiveInputTarit;
 
 class ActiveButton extends Widget
 {
-	use ActiveInputTarit {
-		init as public initTarit;
-	}
+	use ActiveInputTarit;
 	
 	const TYPE_DEFAULT = 'default';
 	const TYPE_YES     = 'yes';
@@ -91,15 +90,7 @@ class ActiveButton extends Widget
 	 */
 	public $type;
 	
-	
-	public function init()
-	{
-		static::initTarit();
-		
-		Html::addCssClass( $this->options, [ 'widget' => 'yozh-widget-active-button' ] );
-		
-	}
-	
+	public $options;
 	
 	/**
 	 * Renders the widget.

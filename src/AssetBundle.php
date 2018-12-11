@@ -2,6 +2,8 @@
 
 namespace yozh\widget;
 
+use Yii;
+
 class AssetBundle extends \yozh\base\AssetBundle
 {
 
@@ -14,7 +16,7 @@ class AssetBundle extends \yozh\base\AssetBundle
 	
     public $js = [
         'js/yozh-widget.js',
-        'js/yozh-modal.js',
+        //'js/yozh-widget-modal.js',
     ];
 	
 	public $depends = [

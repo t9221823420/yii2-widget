@@ -23,7 +23,7 @@
 			var _modalId = '#' + yozh.Modal.pluginId;
 			
 			_$target = _$target || jQuery( _modalId );
-			
+			yozh - modal
 			var _btnYes = strtr( yozh.ActiveButton.TEMPLATE, {
 				'{type}' : 'yes',
 				'{label}' : 'Yes',
@@ -529,5 +529,4 @@
 	
 	$.fn[ yozh.Modal.pluginId ] = _plugin;
 	
-} )
-( jQuery );
+} )( jQuery );

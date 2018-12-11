@@ -28,18 +28,25 @@ use yii\helpers\Html;
  */
 trait ActiveInputTarit
 {
+	use WidgetTrait {
+		init as private _init;
+	}
+	
 	/**
 	 * @var Model the data model that this widget is associated with.
 	 */
 	public $model;
+	
 	/**
 	 * @var string the model attribute that this widget is associated with.
 	 */
 	public $attribute;
+	
 	/**
 	 * @var string the input name. This must be set if [[model]] and [[attribute]] are not set.
 	 */
 	public $name;
+	
 	/**
 	 * @var string the input value.
 	 */
@@ -56,7 +63,7 @@ trait ActiveInputTarit
 			$this->options['id'] = Html::getInputId($this->model, $this->attribute);
 		}
 		
-		parent::init();
+		$this->_init();
 	}
 	
 	/**

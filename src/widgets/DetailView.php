@@ -8,148 +8,168 @@
 
 namespace yozh\widget\widgets;
 
-use yii\base\InvalidConfigException;
+use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
 use yozh\base\components\helpers\ArrayHelper;
-use yozh\base\components\helpers\Inflector;
+use yozh\base\interfaces\models\ActiveRecordInterface;
+use yozh\base\traits\NormalizeAttributesTrait;
+use yii\base\InvalidConfigException;
+use yozh\widget\traits\WidgetTrait;
 
 class DetailView extends \yii\widgets\DetailView
 {
-	public function renderAttributes( $attributes = [] )
+	const TEMPLATE = '<tr {contentOptions}><th {labelOptions}>{label}</th><td {valueOptions}>{value}</td></tr>';
+	
+	use NormalizeAttributesTrait, WidgetTrait {
+		init as public initTarit;
+	}
+	
+	public $tag = 'table';
+	
+	public $options = [
+		'class' => 'table table-striped table-bordered detail-view',
+	];
+	
+	public $contentOptions = [];
+	
+	public $labelOptions = [];
+	
+	public $valueOptions = [
+		'class' => 'text',
+	];
+	
+	public $template;
+	
+	public $attributes = [];
+	
+	public $encodeLabel = true;
+	
+	public function init()
 	{
-		$rows = [];
+		$this->template = $this->template ?? static::TEMPLATE;
 		
-		$i = 0;
+		static::initTarit();
 		
-		foreach( $attributes as $attribute ) {
-			$rows[] = $this->renderAttribute( $attribute, $i++ );
-		}
+		/*
+		$this->options['contentOptions'] = array_merge( $this->contentOptions, $this->options['contentOptions'] ?? [] );
+		$this->options['labelOptions']   = array_merge( $this->labelOptions, $this->options['labelOptions'] ?? [] );
+		$this->options['valueOptions']   = array_merge( $this->valueOptions, $this->options['valueOptions'] ?? [] );
+		*/
 		
-		$options = $this->options;
-		$tag     = ArrayHelper::remove( $options, 'tag', 'table' );
+		$this->options['tag'] = $this->options['tag'] ?? $this->tag;
 		
-		return Html::tag( $tag, implode( "\n", $rows ), $options );
 	}
 	
 	public function run()
 	{
-		print $this->renderAttributes( $this->attributes );
+		$attributes = $this->_normalizeAttributes( $this->model, $this->attributes );
+		
+		print $this->_renderAttributes( $this->model, $attributes );
 	}
 	
-	protected function renderAttribute( $attribute, $index )
+	public function _renderAttributes( $Model, $attributes = [], $options = null )
 	{
-		$value = $attribute['value'] ?? null;
+		$options = $options ?? $this->options;
 		
-		if( $value instanceof Model || is_object( $value ) || is_array( $value ) ) {
+		$rows = [];
+		
+		$i = 0;
+		
+		foreach( $attributes ?? [] as $key => $attribute ) {
 			
-			$Model = $value;
+			$attributeName = $attribute['attribute'] ?? false;
 			
-			$attributes = $this->normalizeAttributes( $Model );
-			
-			//<label class="control-label" for="productvariation-title">Title</label>
-			
-			$attribute['value'] = $this->renderAttributes( $attributes );
-			
-			if( !isset( $attribute['format'] ) || $attribute['format'] == 'text' ) {
+			if( $attributeName && isset( $attribute['value'] )
+				&& $Model instanceof ActiveRecordInterface
+				&& $references = $Model->getAttributeReferences( $attributeName )
+			) {
 				
-				$attribute['format'] = $format = 'html';
+				foreach( $references as $refName => $Reference ) {
+					
+					$refItems = $Model->getAttributeReferenceItems( $attributeName, $Reference );
+					
+					if( isset( $refItems[ $attribute['value'] ] ) ) {
+						$attribute['value'] = $refItems[ $attribute['value'] ];
+					}
+					
+				}
 				
 			}
 			
+			$rows[ $i ] = $this->_renderAttribute( $Model, $attribute, $key, $i++, $options );
 		}
 		
-		return parent::renderAttribute( $attribute, $index );
+		$tag = ArrayHelper::remove( $options, 'tag', 'table' );
 		
+		return Html::tag( $tag, implode( "\n", $rows ), $options );
 	}
 	
-	protected function normalizeAttributes( $Model = null, $attributes = null )
+	protected function _renderAttribute( $Model, $attribute, $key, $index, $options = null )
 	{
-		// our answer for original bungler
-		if( !$Model && !$attributes ) {
-			return parent::normalizeAttributes();
-		}
+		$attribute['valueOptions'] = $attribute['valueOptions'] ?? $this->valueOptions ?? [];
 		
-		if( $attributes === null ) {
+		if( is_iterable( $attribute['value'] ) || ( isset( $attribute['nested'] ) && is_iterable( $attribute['nested'] ) ) ) {
 			
-			if( $Model instanceof Model ) {
-				$attributes = $Model->attributes();
-			}
-			else if( is_object( $Model ) ) {
-				$attributes = $Model instanceof Arrayable ? array_keys( $Model->toArray() ) : array_keys( get_object_vars( $Model ) );
-			}
-			else if( is_array( $Model ) ) {
-				$attributes = array_keys( $Model );
+			if( $attributes = $this->_normalizeAttributes( $attribute['value'], $attribute['nested'] ?? null ) ) {
+				
+				unset( $options['class']['namespace'] );
+				unset( $options['class']['widget'] );
+				Html::removeCssClass( $options, 'detail-view' );
+				
+				$attribute['value'] = $this->_renderAttributes( $attribute['value'], $attributes, $options );
+				
+				if( !isset( $attribute['format'] ) || $attribute['format'] == 'text' ) {
+					
+					$attribute['format'] = [ 'html', 'config' => function( $config ) {
+						$config->getHTMLDefinition( true )
+						       ->addElement( 'label', 'Inline', 'Inline', 'Common' )
+						;
+					} ];
+					
+				}
+				
+				Html::addCssClass( $attribute['valueOptions'], 'nested' );
+				
 			}
 			else {
-				throw new InvalidConfigException( 'The "model" property must be either an array or an object.' );
+				$attribute['value'] = null;
 			}
 			
-			sort( $attributes );
 		}
 		
-		foreach( $attributes as $i => $attribute ) {
+		if( is_string( $this->template ) ) {
 			
-			if( is_string( $attribute ) ) {
+			$attribute['contentOptions'] = Html::renderTagAttributes( $attribute['contentOptions'] ?? $this->contentOptions ?? [] );
+			$attribute['labelOptions']   = Html::renderTagAttributes( $attribute['labelOptions'] ?? $this->labelOptions ?? [] );
+			$attribute['valueOptions']   = Html::renderTagAttributes( $attribute['valueOptions'] ?? $this->valueOptions ?? [] );
 			
-				if( !preg_match( '/^([^:]+)(:(\w*))?(:(.*))?$/', $attribute, $matches ) ) {
-					throw new InvalidConfigException( 'The attribute must be specified in the format of "attribute", "attribute:format" or "attribute:format:label"' );
+			// for backward compatibility
+			if( empty( $attribute['labelOptions'] ) ) {
+				$attribute['labelOptions'] = Html::renderTagAttributes( $attribute['captionOptions'] ?? [] );
+			}
+			
+			$attribute['value'] = $this->formatter->format( $attribute['value'], $attribute['format'] );
+			
+			$replace = [];
+			
+			if( preg_match_all( '/{(.*?)}/', $this->template, $from ) ) {
+				
+				array_shift( $from );
+				
+				foreach( $from[0] as $key ) {
+					$replace[ '{' . $key . '}' ] = $attribute[ $key ] ?? '';
 				}
-			
-				$attribute = [
-					'attribute' => $matches[1],
-					'format'    => isset( $matches[3] ) ? $matches[3] : 'text',
-					'label'     => isset( $matches[5] ) ? $matches[5] : null,
-				];
-				
 			}
 			
-			if( !is_array( $attribute ) ) {
-				throw new InvalidConfigException( 'The attribute configuration must be an array.' );
-			}
-			
-			if( isset( $attribute['visible'] ) && !$attribute['visible'] ) {
-				unset( $attributes[ $i ] );
-				continue;
-			}
-			
-			if( isset( $attribute['attribute'] ) ) {
-				
-				$attributeName = $attribute['attribute'];
-				
-				if( !isset( $attribute['label'] ) ) {
-					$attribute['label'] = $Model instanceof Model ? $Model->getAttributeLabel( $attributeName ) : Inflector::camel2words( $attributeName, true );
-				}
-				
-				if( $attribut['value'] ?? true ) {
-					$attribute['value'] = $value = ArrayHelper::getValue( $Model, $attributeName );
-				}
-				
-			}
-			else if( !isset( $attribute['label'] ) || !array_key_exists( 'value', $attribute ) ) {
-				throw new InvalidConfigException( 'The attribute configuration requires the "attribute" element to determine the value and display label.' );
-			}
-			
-			if( !isset( $attribute['format'] ) ) {
-				
-				if ( $value instanceof Model || is_object( $value ) || is_array( $value )  ){
-					$attribute['format'] = $format = 'html';
-				}
-				else{
-					$attribute['format'] = $format = 'text';
-				}
-				
-			}
-			
-			if( $attribute['value'] instanceof \Closure ) {
-				$attribute['value'] = call_user_func( $attribute['value'], $Model, $this );
-			}
-			
-			$attributes[ $i ] = $attribute;
+			$output = strtr( $this->template, $replace );
+		}
+		else if( $this->template instanceof \Closure ) {
+			$output = call_user_func( $this->template, $Model, $attribute, $key, $index, $this );
 		}
 		
-		return $attributes;
+		return $output;
+		
 	}
-	
 	
 }

@@ -1,0 +1,29 @@
+ul.yozh-widget-treeview {
+    padding: 0;
+}
+
+ul.yozh-tree{
+    list-style-type: none;
+}
+
+.yozh-widget-treeview li > i {
+    margin-right: 3px;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.yozh-widget-treeview li > .text {
+    margin-left: 5px;
+}
+
+.yozh-widget-treeview .yozh-off{
+    display: none;
+}
+
+.yozh-widget-treeview .yozh-on{
+    display: block;
+}
+
+.yozh-widget-treeview label::after {
+    content: ":";
+}

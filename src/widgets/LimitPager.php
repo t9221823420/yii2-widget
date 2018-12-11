@@ -85,7 +85,8 @@ class LimitPager extends Widget
 			return '';
 		}
 		
-		Html::addCssClass( $this->containerOptions, [ 'widget' => 'pagination-limits ' . ( $this->toggleDown === true ? 'dropdown' : 'dropup' ) ] );
+		Html::addCssClass( $this->containerOptions, [ 'type' => 'pagination-limits ' . ( $this->toggleDown === true ? 'dropdown' : 'dropup' ) ] );
+		
 		$options = $this->containerOptions;
 		$tag     = ArrayHelper::remove( $options, 'tag', 'div' );
 		
