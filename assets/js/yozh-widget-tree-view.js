@@ -1,6 +1,6 @@
 (function($) {
 	
-	$('.yozh-widget-treeview i').on('click', function( e ){
+	$('.yozh-widget-tree-view i').on('click', function( e ){
 		
 		e.stopImmediatePropagation();
 		

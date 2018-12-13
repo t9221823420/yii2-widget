@@ -1,4 +1,4 @@
-ul.yozh-widget-treeview {
+ul.yozh-widget-tree-view {
     padding: 0;
 }
 
@@ -6,24 +6,24 @@ ul.yozh-tree{
     list-style-type: none;
 }
 
-.yozh-widget-treeview li > i {
+.yozh-widget-tree-view li > i {
     margin-right: 3px;
     font-size: 0.9em;
     cursor: pointer;
 }
 
-.yozh-widget-treeview li > .text {
+.yozh-widget-tree-view li > .text {
     margin-left: 5px;
 }
 
-.yozh-widget-treeview .yozh-off{
+.yozh-widget-tree-view .yozh-off{
     display: none;
 }
 
-.yozh-widget-treeview .yozh-on{
+.yozh-widget-tree-view .yozh-on{
     display: block;
 }
 
-.yozh-widget-treeview label::after {
+.yozh-widget-tree-view label::after {
     content: ":";
 }

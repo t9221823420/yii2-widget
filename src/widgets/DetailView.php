@@ -27,9 +27,7 @@ class DetailView extends \yii\widgets\DetailView
 	
 	public $tag = 'table';
 	
-	public $options = [
-		'class' => 'table table-striped table-bordered detail-view',
-	];
+	public $options;
 	
 	public $contentOptions = [];
 	
@@ -47,7 +45,17 @@ class DetailView extends \yii\widgets\DetailView
 	
 	public function init()
 	{
+		$this->options = $this->options ?? [
+				'class' => 'table table-striped table-bordered detail-view',
+			];
+		
 		$this->template = $this->template ?? static::TEMPLATE;
+		
+		if( empty( $this->model ) && is_array( $this->attributes ) && count( $this->attributes ) ) {
+			$this->model = $this->attributes;
+		}
+		
+		$this->attributes = $this->_normalizeAttributes( $this->model, $this->attributes ?? [] );
 		
 		static::initTarit();
 		
@@ -63,9 +71,7 @@ class DetailView extends \yii\widgets\DetailView
 	
 	public function run()
 	{
-		$attributes = $this->_normalizeAttributes( $this->model, $this->attributes );
-		
-		print $this->_renderAttributes( $this->model, $attributes );
+		print $this->_renderAttributes( $this->model, $this->attributes );
 	}
 	
 	public function _renderAttributes( $Model, $attributes = [], $options = null )
@@ -109,10 +115,11 @@ class DetailView extends \yii\widgets\DetailView
 	{
 		$attribute['valueOptions'] = $attribute['valueOptions'] ?? $this->valueOptions ?? [];
 		
-		if( is_iterable( $attribute['value'] ) || ( isset( $attribute['nested'] ) && is_iterable( $attribute['nested'] ) ) ) {
+		if( is_iterable( $attribute['value'] ) || ( empty($attribute['value']) && isset( $attribute['nested'] ) && is_iterable( $attribute['nested'] ) ) ) {
 			
-			if( $attributes = $this->_normalizeAttributes( $attribute['value'], $attribute['nested'] ?? null ) ) {
+			if( $attributes = $this->_normalizeAttributes( $attribute['value'], $attribute['nested'] ?? [] ) ) {
 				
+				// prevent to print widget ID classes in nested nodes
 				unset( $options['class']['namespace'] );
 				unset( $options['class']['widget'] );
 				Html::removeCssClass( $options, 'detail-view' );
@@ -137,19 +144,15 @@ class DetailView extends \yii\widgets\DetailView
 			}
 			
 		}
+		else{
+			$attribute['value'] = $this->formatter->format( $attribute['value'], $attribute['format'] );
+		}
 		
 		if( is_string( $this->template ) ) {
 			
 			$attribute['contentOptions'] = Html::renderTagAttributes( $attribute['contentOptions'] ?? $this->contentOptions ?? [] );
 			$attribute['labelOptions']   = Html::renderTagAttributes( $attribute['labelOptions'] ?? $this->labelOptions ?? [] );
 			$attribute['valueOptions']   = Html::renderTagAttributes( $attribute['valueOptions'] ?? $this->valueOptions ?? [] );
-			
-			// for backward compatibility
-			if( empty( $attribute['labelOptions'] ) ) {
-				$attribute['labelOptions'] = Html::renderTagAttributes( $attribute['captionOptions'] ?? [] );
-			}
-			
-			$attribute['value'] = $this->formatter->format( $attribute['value'], $attribute['format'] );
 			
 			$replace = [];
 			

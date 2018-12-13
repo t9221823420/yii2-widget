@@ -90,8 +90,6 @@ class ActiveButton extends Widget
 	 */
 	public $type;
 	
-	public $options;
-	
 	/**
 	 * Renders the widget.
 	 */
